@@ -252,92 +252,93 @@ export default class GoogleMapMarkers extends Component {
   render() {
     const mainElementStyle = this.props.style || mainStyle;
     this.dimensionsCache_ = {};
+    
+    const markers = undefined
+    // const markers = React.Children.map(
+    //   this.state.children,
+    //   (child, childIndex) => {
+    //     if (!child) return undefined;
+    //     if (
+    //       child.props.latLng === undefined &&
+    //       child.props.lat === undefined &&
+    //       child.props.lng === undefined
+    //     ) {
+    //       return React.cloneElement(child, {
+    //         $geoService: this.props.geoService,
+    //         $onMouseAllow: this._onMouseAllow,
+    //         $prerender: this.props.prerender,
+    //       });
+    //     }
 
-    const markers = React.Children.map(
-      this.state.children,
-      (child, childIndex) => {
-        if (!child) return undefined;
-        if (
-          child.props.latLng === undefined &&
-          child.props.lat === undefined &&
-          child.props.lng === undefined
-        ) {
-          return React.cloneElement(child, {
-            $geoService: this.props.geoService,
-            $onMouseAllow: this._onMouseAllow,
-            $prerender: this.props.prerender,
-          });
-        }
+    //     const latLng =
+    //       child.props.latLng !== undefined
+    //         ? child.props.latLng
+    //         : { lat: child.props.lat, lng: child.props.lng };
 
-        const latLng =
-          child.props.latLng !== undefined
-            ? child.props.latLng
-            : { lat: child.props.lat, lng: child.props.lng };
+    //     const pt = this.props.insideMapPanes
+    //       ? this.props.geoService.fromLatLngToDivPixel(latLng)
+    //       : this.props.geoService.fromLatLngToCenterPixel(latLng);
 
-        const pt = this.props.insideMapPanes
-          ? this.props.geoService.fromLatLngToDivPixel(latLng)
-          : this.props.geoService.fromLatLngToCenterPixel(latLng);
+    //     const stylePtPos = {
+    //       left: pt.x,
+    //       top: pt.y,
+    //     };
 
-        const stylePtPos = {
-          left: pt.x,
-          top: pt.y,
-        };
+    //     // If the component has a southeast corner defined (either as a LatLng, or a separate
+    //     // lat and lng pair), set the width and height based on the distance between the northwest
+    //     // and the southeast corner to lock the overlay to the correct geographic bounds.
+    //     if (
+    //       child.props.seLatLng !== undefined ||
+    //       (child.props.seLat !== undefined && child.props.seLng !== undefined)
+    //     ) {
+    //       const seLatLng =
+    //         child.props.seLatLng !== undefined
+    //           ? child.props.seLatLng
+    //           : { lat: child.props.seLat, lng: child.props.seLng };
 
-        // If the component has a southeast corner defined (either as a LatLng, or a separate
-        // lat and lng pair), set the width and height based on the distance between the northwest
-        // and the southeast corner to lock the overlay to the correct geographic bounds.
-        if (
-          child.props.seLatLng !== undefined ||
-          (child.props.seLat !== undefined && child.props.seLng !== undefined)
-        ) {
-          const seLatLng =
-            child.props.seLatLng !== undefined
-              ? child.props.seLatLng
-              : { lat: child.props.seLat, lng: child.props.seLng };
+    //       const sePt = this.props.insideMapPanes
+    //         ? this.props.geoService.fromLatLngToDivPixel(seLatLng)
+    //         : this.props.geoService.fromLatLngToCenterPixel(seLatLng);
 
-          const sePt = this.props.insideMapPanes
-            ? this.props.geoService.fromLatLngToDivPixel(seLatLng)
-            : this.props.geoService.fromLatLngToCenterPixel(seLatLng);
+    //       stylePtPos.width = sePt.x - pt.x;
+    //       stylePtPos.height = sePt.y - pt.y;
+    //     }
 
-          stylePtPos.width = sePt.x - pt.x;
-          stylePtPos.height = sePt.y - pt.y;
-        }
+    //     const containerPt = this.props.geoService.fromLatLngToContainerPixel(
+    //       latLng
+    //     );
 
-        const containerPt = this.props.geoService.fromLatLngToContainerPixel(
-          latLng
-        );
+    //     // to prevent rerender on child element i need to pass
+    //     // const params $getDimensions and $dimensionKey instead of dimension object
+    //     const childKey =
+    //       child.key !== undefined && child.key !== null
+    //         ? child.key
+    //         : childIndex;
 
-        // to prevent rerender on child element i need to pass
-        // const params $getDimensions and $dimensionKey instead of dimension object
-        const childKey =
-          child.key !== undefined && child.key !== null
-            ? child.key
-            : childIndex;
+    //     this.dimensionsCache_[childKey] = {
+    //       x: containerPt.x,
+    //       y: containerPt.y,
+    //       ...latLng,
+    //     };
 
-        this.dimensionsCache_[childKey] = {
-          x: containerPt.x,
-          y: containerPt.y,
-          ...latLng,
-        };
-
-        return (
-          <div
-            key={childKey}
-            style={{ ...style, ...stylePtPos }}
-            className={child.props.$markerHolderClassName}
-          >
-            {React.cloneElement(child, {
-              $hover: childKey === this.state.hoverKey,
-              $getDimensions: this._getDimensions,
-              $dimensionKey: childKey,
-              $geoService: this.props.geoService,
-              $onMouseAllow: this._onMouseAllow,
-              $prerender: this.props.prerender,
-            })}
-          </div>
-        );
-      }
-    );
+    //     return (
+    //       <div
+    //         key={childKey}
+    //         style={{ ...style, ...stylePtPos }}
+    //         className={child.props.$markerHolderClassName}
+    //       >
+    //         {React.cloneElement(child, {
+    //           $hover: childKey === this.state.hoverKey,
+    //           $getDimensions: this._getDimensions,
+    //           $dimensionKey: childKey,
+    //           $geoService: this.props.geoService,
+    //           $onMouseAllow: this._onMouseAllow,
+    //           $prerender: this.props.prerender,
+    //         })}
+    //       </div>
+    //     );
+    //   }
+    // );
 
     return <div style={mainElementStyle}>{markers}</div>;
   }
